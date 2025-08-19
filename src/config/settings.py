@@ -2,48 +2,65 @@
 Pydantic settings for PokeAPI testing configuration.
 """
 
+import os
 from typing import Optional
-from pydantic_settings import BaseSettings
-from pydantic import Field
+from pydantic import BaseModel, Field
 
 
-class Settings(BaseSettings):
+class Settings(BaseModel):
     """Base settings for the application."""
     
-    # Environment
-    environment: str = Field(default="local", description="Environment name (local, ci, staging)")
-    debug: bool = Field(default=False, description="Debug mode")
+    base_url: str = Field(
+        default=os.getenv('POKEAPI_BASE_URL', 'https://pokeapi.co/api/v2'),
+        description="Base URL for the PokeAPI"
+    )
+    timeout: int = Field(
+        default=int(os.getenv('POKEAPI_TIMEOUT', '30000')),
+        description="Default timeout for API requests in milliseconds"
+    )
+    log_level: str = Field(
+        default=os.getenv('POKEAPI_LOG_LEVEL', 'INFO'),
+        description="Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)"
+    )
     
-    # Logging
-    log_level: str = Field(default="INFO", description="Logging level")
-    log_format: str = Field(default="json", description="Logging format (json, text)")
-    
-    class Config:
-        env_prefix = "POKEAPI_"
-        env_file = ".env"
+    # Add other global settings here
 
 
-class TestSettings(BaseSettings):
-    """Test-specific settings."""
+class TestSettings(BaseModel):
+    """Test-specific settings, overriding global settings for testing."""
     
-    # API Configuration
-    base_url: str = Field(default="https://pokeapi.co/api/v2", description="Base URL for PokéAPI")
-    timeout: int = Field(default=30, description="Request timeout in seconds")
-    retry_attempts: int = Field(default=3, description="Number of retry attempts")
-    
-    # Test Configuration
-    parallel_workers: int = Field(default=4, description="Number of parallel test workers")
-    test_data_path: str = Field(default="testdata", description="Path to test data directory")
-    
-    # Browser Configuration (future UI tests)
-    browser_headless: bool = Field(default=True, description="Run browser in headless mode")
-    browser_timeout: int = Field(default=30, description="Browser timeout in seconds")
-    
-    class Config:
-        env_prefix = "TEST_"
-        env_file = ".env"
+    base_url: str = Field(
+        default=os.getenv('TEST_BASE_URL', 'https://pokeapi.co/api/v2'),
+        description="Base URL for the PokeAPI in test environment"
+    )
+    timeout: int = Field(
+        default=int(os.getenv('TEST_TIMEOUT', '30')),
+        description="Default timeout for API requests in seconds"
+    )
+    parallel_workers: int = Field(
+        default=int(os.getenv('TEST_PARALLEL_WORKERS', '4')),
+        description="Number of parallel test workers"
+    )
 
 
 # Global settings instances
 settings = Settings()
 test_settings = TestSettings()
+
+# Configuration validation
+def validate_config():
+    """Validate configuration settings."""
+    if not settings.base_url.startswith(('http://', 'https://')):
+        raise ValueError(f"Invalid base_url: {settings.base_url}. Must start with http:// or https://")
+    
+    if settings.timeout <= 0:
+        raise ValueError(f"Invalid timeout: {settings.timeout}. Must be positive")
+    
+    if test_settings.timeout <= 0:
+        raise ValueError(f"Invalid test timeout: {test_settings.timeout}. Must be positive")
+    
+    if test_settings.parallel_workers <= 0:
+        raise ValueError(f"Invalid parallel workers: {test_settings.parallel_workers}. Must be positive")
+
+# Validate configuration on import
+validate_config()

@@ -15,12 +15,22 @@ dependencies = [
     "pydantic>=2.0.0",
 ]
 
-
-
 [project.optional-dependencies]
 dev = [
     "black>=23.7.0",
 ]
+
+[tool.pokeapi]
+# PokeAPI Configuration
+base_url = "https://pokeapi.co/api/v2"
+timeout = 30000
+log_level = "INFO"
+
+[tool.pokeapi.test]
+# Test-specific configuration
+base_url = "https://pokeapi.co/api/v2"
+timeout = 30
+parallel_workers = 4
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
