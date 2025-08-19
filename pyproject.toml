@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pokeapi-testing"
+version = "1.0.0"
+description = "Comprehensive API testing framework with Playwright APIRequestContext and Pydantic validation"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pytest>=7.4.0",
+    "pytest-playwright>=0.4.0",
+    "playwright>=1.37.0",
+    "pydantic>=2.0.0",
+]
+
+
+
+[project.optional-dependencies]
+dev = [
+    "black>=23.7.0",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.mypy_cache
+  | \.pytest_cache
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+
