@@ -17,7 +17,6 @@ def playwright() -> Playwright:
 def api_request_context(playwright: Playwright) -> APIRequestContext:
     """API request context for making HTTP requests."""
     context = playwright.request.new_context(
-        base_url="https://pokeapi.co/api/v2",
         timeout=30000,  # 30 seconds in milliseconds
     )
     yield context
