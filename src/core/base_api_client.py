@@ -34,13 +34,14 @@ class BaseAPIClient:
         
         self.logger.info(f"BaseAPIClient initialized with base_url: {self.base_url}")
     
-    def get(self, endpoint: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def get(self, endpoint: str, params: Optional[Dict[str, Any]] = None, headers: Optional[Dict[str, str]] = None) -> Dict[str, Any]:
         """
         Make a GET request to the specified endpoint.
         
         Args:
             endpoint: API endpoint path (e.g., '/pokemon/1')
             params: Optional query parameters
+            headers: Optional request headers
             
         Returns:
             Response data as dictionary
@@ -53,7 +54,7 @@ class BaseAPIClient:
         self.logger.info(f"Making GET request to {full_url} with params: {params}")
         
         try:
-            response = self.api_request_context.get(full_url, params=params)
+            response = self.api_request_context.get(full_url, params=params, headers=headers)
             
             self.logger.info(f"Response status: {response.status}")
             self.logger.info(f"Response URL: {response.url}")
@@ -70,4 +71,133 @@ class BaseAPIClient:
             
         except Exception as e:
             self.logger.error(f"Failed to make GET request to {full_url}: {str(e)}")
+            raise
+    
+    def post(self, endpoint: str, data: Optional[Dict[str, Any]] = None, headers: Optional[Dict[str, str]] = None) -> Dict[str, Any]:
+        """
+        Make a POST request to the specified endpoint.
+        
+        Args:
+            endpoint: API endpoint path
+            data: Optional request body data
+            headers: Optional request headers
+            
+        Returns:
+            Response data as dictionary
+            
+        Raises:
+            Exception: If the request fails
+        """
+        full_url = f"{self.base_url.rstrip('/')}{endpoint}"
+        self.logger.info(f"Making POST request to {full_url}")
+        
+        try:
+            response = self.api_request_context.post(full_url, data=data, headers=headers)
+            
+            self.logger.info(f"Response status: {response.status}")
+            
+            # For POST requests, we expect 4xx or 5xx errors in testing scenarios
+            if response.ok:
+                return response.json() if response.text() else {}
+            else:
+                # Return error response for testing purposes
+                return {"status": response.status, "error": response.text()}
+                
+        except Exception as e:
+            self.logger.error(f"Failed to make POST request to {full_url}: {str(e)}")
+            raise
+    
+    def put(self, endpoint: str, data: Optional[Dict[str, Any]] = None, headers: Optional[Dict[str, str]] = None) -> Dict[str, Any]:
+        """
+        Make a PUT request to the specified endpoint.
+        
+        Args:
+            endpoint: API endpoint path
+            data: Optional request body data
+            headers: Optional request headers
+            
+        Returns:
+            Response data as dictionary
+            
+        Raises:
+            Exception: If the request fails
+        """
+        full_url = f"{self.base_url.rstrip('/')}{endpoint}"
+        self.logger.info(f"Making PUT request to {full_url}")
+        
+        try:
+            response = self.api_request_context.put(full_url, data=data, headers=headers)
+            
+            self.logger.info(f"Response status: {response.status}")
+            
+            if response.ok:
+                return response.json() if response.text() else {}
+            else:
+                return {"status": response.status, "error": response.text()}
+                
+        except Exception as e:
+            self.logger.error(f"Failed to make PUT request to {full_url}: {str(e)}")
+            raise
+    
+    def delete(self, endpoint: str, headers: Optional[Dict[str, str]] = None) -> Dict[str, Any]:
+        """
+        Make a DELETE request to the specified endpoint.
+        
+        Args:
+            endpoint: API endpoint path
+            headers: Optional request headers
+            
+        Returns:
+            Response data as dictionary
+            
+        Raises:
+            Exception: If the request fails
+        """
+        full_url = f"{self.base_url.rstrip('/')}{endpoint}"
+        self.logger.info(f"Making DELETE request to {full_url}")
+        
+        try:
+            response = self.api_request_context.delete(full_url, headers=headers)
+            
+            self.logger.info(f"Response status: {response.status}")
+            
+            if response.ok:
+                return response.json() if response.text() else {}
+            else:
+                return {"status": response.status, "error": response.text()}
+                
+        except Exception as e:
+            self.logger.error(f"Failed to make DELETE request to {full_url}: {str(e)}")
+            raise
+    
+    def patch(self, endpoint: str, data: Optional[Dict[str, Any]] = None, headers: Optional[Dict[str, str]] = None) -> Dict[str, Any]:
+        """
+        Make a PATCH request to the specified endpoint.
+        
+        Args:
+            endpoint: API endpoint path
+            data: Optional request body data
+            headers: Optional request headers
+            
+        Returns:
+            Response data as dictionary
+            
+        Raises:
+            Exception: If the request fails
+        """
+        full_url = f"{self.base_url.rstrip('/')}{endpoint}"
+        self.logger.info(f"Making PATCH request to {full_url}")
+        
+        try:
+            response = self.api_request_context.patch(full_url, data=data, headers=headers)
+            
+            self.logger.info(f"Response status: {response.status}")
+            
+            if response.ok:
+                return response.json() if response.text() else {}
+            else:
+                return {"status": response.status, "error": response.text()}
+                
+        except Exception as e:
+            self.logger.error(f"Failed to make PATCH request to {full_url}: {str(e)}")
             raise
