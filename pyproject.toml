@@ -15,11 +15,53 @@ dependencies = [
     "pydantic>=2.0.0",
 ]
 
-
-
 [project.optional-dependencies]
 dev = [
     "black>=23.7.0",
+]
+
+[tool.pokeapi]
+# PokeAPI Configuration
+base_url = "https://pokeapi.co/api/v2"
+timeout = 30000
+log_level = "INFO"
+
+[tool.pokeapi.test]
+# Test-specific configuration
+base_url = "https://pokeapi.co/api/v2"
+timeout = 30
+parallel_workers = 4
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+pythonpath = ["src"]
+markers = [
+    "api: API tests using Playwright APIRequestContext",
+    "ui: UI tests using Playwright browser automation",
+    "pokemon: Tests specific to Pokémon resource family",
+    "abilities: Tests specific to Abilities resource family",
+    "moves: Tests specific to Moves resource family",
+    "types: Tests specific to Types resource family",
+    "smoke: Quick smoke tests for core functionality",
+    "regression: Full regression test suite",
+]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(name)s: %(message)s"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "-v",
+    "--tb=short",
+]
+minversion = "7.0"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
 ]
 
 [tool.black]
