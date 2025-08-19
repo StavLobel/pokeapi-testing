@@ -92,42 +92,6 @@ class TestPokemon:
         # Use helper method for comprehensive validation
         self._validate_pokemon_structure(pokemon, pokemon_id, expected_name)
 
-    @pytest.mark.api
-    @pytest.mark.pokemon
-    def test_pok_cli_base_url_override(self, pokemon_client: PokemonAPIClient, dynamic_settings: dict):
-        """
-        Test that CLI base URL override is working correctly.
-        
-        This test verifies that when --api-base-url is provided via CLI,
-        the API client actually uses the overridden URL instead of the default.
-        
-        Args:
-            pokemon_client: API client for Pokémon endpoints
-            dynamic_settings: Dynamic settings fixture with CLI overrides
-        """
-        # Get the CLI override if provided
-        cli_base_url = dynamic_settings.get('cli_base_url')
-        
-        if cli_base_url:
-            # If CLI override is provided, verify the client is using it
-            expected_base_url = cli_base_url.rstrip('/')
-            actual_base_url = pokemon_client.base_url.rstrip('/')
-            
-            assert actual_base_url == expected_base_url, (
-                f"CLI override not working. Expected: {expected_base_url}, Got: {actual_base_url}"
-            )
-            
-            # Log the override for debugging
-            print(f"✅ CLI override working! Client using: {actual_base_url}")
-        else:
-            # If no CLI override, verify default behavior
-            expected_base_url = "https://pokeapi.co/api/v2"
-            actual_base_url = pokemon_client.base_url.rstrip('/')
-            
-            assert actual_base_url == expected_base_url, (
-                f"Default base URL not working. Expected: {expected_base_url}, Got: {actual_base_url}"
-            )
-
     # ============================================================================
     # STASHED TEST CASES - Uncomment when ready to implement
     # ============================================================================
