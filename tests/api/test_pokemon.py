@@ -124,6 +124,41 @@ class TestPokemon:
     
     @pytest.mark.api
     @pytest.mark.pokemon
+    @pytest.mark.parametrize("pokemon_id, expected_name", VALID_POKEMON_BY_ID)
+    def test_pok_06_schema_validation(self, pokemon_client: PokemonAPIClient, pokemon_id: int, expected_name: str):
+        """
+        POK-06: Schema correctness.
+        
+        Test that the Pokémon response has the correct schema structure,
+        including all required fields and proper data types.
+        
+        Args:
+            pokemon_client: API client for Pokémon endpoints
+            pokemon_id: The Pokémon ID to test
+            expected_name: Expected Pokémon name
+        """
+        # Act
+        response_data = pokemon_client.get_pokemon_by_id(pokemon_id)
+        
+        # Assert - Pydantic validation will raise ValidationError if schema is incorrect
+        pokemon = Pokemon.model_validate(response_data)
+        
+        # Verify specific schema requirements
+        assert len(pokemon.stats) == 6, "Pokémon must have exactly 6 stats"
+        
+        # Verify all expected stats are present
+        stat_names = [stat.stat.name for stat in pokemon.stats]
+        for expected_stat in EXPECTED_STAT_NAMES:
+            assert expected_stat in stat_names, f"Missing expected stat: {expected_stat}"
+        
+        # Verify types (1 or 2 types)
+        assert 1 <= len(pokemon.types) <= 2, "Pokémon must have 1 or 2 types"
+        
+        # Verify abilities (at least 1)
+        assert len(pokemon.abilities) >= 1, "Pokémon must have at least 1 ability"
+    
+    @pytest.mark.api
+    @pytest.mark.pokemon
     @pytest.mark.parametrize("invalid_id", INVALID_POKEMON_IDS)
     def test_pok_08_retrieve_pokemon_by_invalid_id(self, pokemon_client: PokemonAPIClient, invalid_id: int):
         """
@@ -161,38 +196,3 @@ class TestPokemon:
         
         # Verify it's a 404 error
         assert "404" in str(exc_info.value)
-    
-    @pytest.mark.api
-    @pytest.mark.pokemon
-    @pytest.mark.parametrize("pokemon_id, expected_name", VALID_POKEMON_BY_ID)
-    def test_pok_06_schema_validation(self, pokemon_client: PokemonAPIClient, pokemon_id: int, expected_name: str):
-        """
-        POK-06: Schema correctness.
-        
-        Test that the Pokémon response has the correct schema structure,
-        including all required fields and proper data types.
-        
-        Args:
-            pokemon_client: API client for Pokémon endpoints
-            pokemon_id: The Pokémon ID to test
-            expected_name: Expected Pokémon name
-        """
-        # Act
-        response_data = pokemon_client.get_pokemon_by_id(pokemon_id)
-        
-        # Assert - Pydantic validation will raise ValidationError if schema is incorrect
-        pokemon = Pokemon.model_validate(response_data)
-        
-        # Verify specific schema requirements
-        assert len(pokemon.stats) == 6, "Pokémon must have exactly 6 stats"
-        
-        # Verify all expected stats are present
-        stat_names = [stat.stat.name for stat in pokemon.stats]
-        for expected_stat in EXPECTED_STAT_NAMES:
-            assert expected_stat in stat_names, f"Missing expected stat: {expected_stat}"
-        
-        # Verify types (1 or 2 types)
-        assert 1 <= len(pokemon.types) <= 2, "Pokémon must have 1 or 2 types"
-        
-        # Verify abilities (at least 1)
-        assert len(pokemon.abilities) >= 1, "Pokémon must have at least 1 ability"

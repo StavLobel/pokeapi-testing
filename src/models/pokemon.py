@@ -4,13 +4,7 @@ Pydantic models for Pokémon data validation.
 
 from typing import List, Optional, Any
 from pydantic import BaseModel, Field, field_validator
-
-
-class NamedAPIResource(BaseModel):
-    """Model for a named API resource reference."""
-    
-    name: str = Field(..., description="The name of the referenced resource")
-    url: str = Field(..., description="The URL of the referenced resource")
+from .base import NamedAPIResource
 
 
 class PokemonAbility(BaseModel):
