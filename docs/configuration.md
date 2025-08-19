@@ -10,6 +10,54 @@ The framework reads configuration from multiple sources in the following priorit
 2. **Environment Variables** 
 3. **Default Values** (lowest priority)
 
+---
+
+## Enhanced Framework Capabilities
+
+### **Comprehensive HTTP Method Support**
+The framework now supports testing all HTTP methods for comprehensive API validation:
+
+#### **Available HTTP Methods:**
+- **GET** - Standard resource retrieval (primary method)
+- **POST** - Testing method not allowed scenarios
+- **PUT** - Testing method not allowed scenarios  
+- **DELETE** - Testing method not allowed scenarios
+- **PATCH** - Testing method not allowed scenarios
+
+#### **Enhanced Testing Features:**
+- **Headers Support**: Custom headers for testing content negotiation
+- **Error Handling**: Graceful handling of 4xx/5xx responses
+- **Method Testing**: Comprehensive validation of read-only API contract
+- **Response Validation**: Full response structure and status code validation
+
+#### **Usage Examples:**
+```python
+# Test non-GET methods (should return 405 Method Not Allowed)
+client.test_http_method("POST", pokemon_id=1)
+client.test_http_method("PUT", pokemon_id=1)
+client.test_http_method("DELETE", pokemon_id=1)
+client.test_http_method("PATCH", pokemon_id=1)
+
+# Test with custom headers
+client.get_pokemon_with_headers(1)
+```
+
+### **Dynamic Configuration Override**
+The CLI argument `--api-base-url` provides runtime configuration override:
+
+```bash
+# Test against local development server
+pytest --api-base-url=http://localhost:8000/api/v2
+
+# Test against staging environment
+pytest --api-base-url=https://staging-pokeapi.example.com/api/v2
+
+# Test against production with specific test selection
+pytest --api-base-url=https://pokeapi.co/api/v2 -k "test_pok_01"
+```
+
+---
+
 ## CLI Arguments
 
 ### --api-base-url
