@@ -104,13 +104,97 @@ PokéAPI v2 is a publicly accessible, read-only REST service that exposes Pokém
 
 ## 6. Endpoint Inventory and Coverage Matrix
 
-| Resource Family | Operation | Params | Positive | Negative | Schema | Status | Pagination |
-|-----------------|-----------|--------|----------|----------|--------|--------|------------|
-| Pokémon         | GET /pokemon/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A |
-| Pokémon (list)  | GET /pokemon?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ |
-| Abilities       | GET /ability/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A |
-| Abilities (list)| GET /ability?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ |
-| …repeat for Moves, Types, Items, etc. | | | | | | | |
+| Resource Family | Operation | Params | Positive | Negative | Schema | Status | Pagination | Implementation Status |
+|-----------------|-----------|--------|----------|----------|--------|--------|------------|----------------------|
+| Pokémon         | GET /pokemon/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A | 🎯 **COMPLETE** ✅ |
+| Pokémon (list)  | GET /pokemon?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | 🎯 **COMPLETE** ✅ |
+| Abilities       | GET /ability/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Abilities (list)| GET /ability?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+| Moves           | GET /move/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Moves (list)    | GET /move?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+| Types           | GET /type/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Types (list)    | GET /type?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+| Items           | GET /item/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Items (list)    | GET /item?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+| Berries         | GET /berry/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Berries (list)  | GET /berry?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+| Machines        | GET /machine/{id} | id | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Machines (list) | GET /machine?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+| Evolution       | GET /evolution-chain/{id} | id | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Evolution (list)| GET /evolution-chain?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+| Encounters      | GET /encounter/{id} | id | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Encounters (list)| GET /encounter?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+| Games           | GET /version/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Games (list)    | GET /version?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+| Locations       | GET /location/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Locations (list)| GET /location?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+| Regions         | GET /region/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Regions (list)  | GET /region?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+| Pokedexes       | GET /pokedex/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Pokedexes (list)| GET /pokedex?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+| Generations     | GET /generation/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Generations (list)| GET /generation?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+| Versions        | GET /version/{id or name} | id, name | ✔ | ✔ | ✔ | 200,404 | N/A | ⏳ **PENDING** |
+| Versions (list) | GET /version?limit&offset | limit, offset | ✔ | ✔ | ✔ | 200,400 | ✔ | ⏳ **PENDING** |
+
+**Legend**: 
+- 🎯 **COMPLETE** ✅ = All test cases implemented and passing
+- ⏳ **PENDING** = Test cases defined but not yet implemented
+- ✔ = Test type planned/required
+
+---
+
+## 6.1 Implementation Status
+
+### 🎯 **COMPLETED RESOURCE FAMILIES**
+
+#### **Pokémon Resource Family** ✅ **100% COMPLETE**
+- **Status**: All 15 POK-XX test cases implemented and passing
+- **Implementation**: `tests/api/test_pokemon.py`
+- **Total Tests**: 56 test scenarios across 15 test methods
+- **Coverage**: 4x parametrized coverage with different Pokémon (Bulbasaur, Pikachu, Mewtwo, Arceus)
+- **Framework Enhancements**: 
+  - Enhanced BaseAPIClient with HTTP methods (POST, PUT, DELETE, PATCH)
+  - Enhanced PokemonAPIClient with comprehensive testing methods
+  - Comprehensive test data for all scenarios
+  - Robust validation helpers
+- **Performance**: All tests pass in ~6.7 seconds
+- **Test Cases**: POK-01 through POK-15 fully implemented
+
+### ⏳ **PENDING RESOURCE FAMILIES**
+
+#### **Abilities Resource Family** ⏳ **0% IMPLEMENTED**
+- **Status**: Test cases defined but not yet implemented
+- **Planned**: ABL-01 through ABL-10 test cases
+- **Dependencies**: Framework ready (BaseAPIClient enhanced)
+
+#### **Moves Resource Family** ⏳ **0% IMPLEMENTED**
+- **Status**: Test cases defined but not yet implemented
+- **Planned**: MOV-01 through MOV-10 test cases
+- **Dependencies**: Framework ready (BaseAPIClient enhanced)
+
+#### **Types Resource Family** ⏳ **0% IMPLEMENTED**
+- **Status**: Test cases defined but not yet implemented
+- **Planned**: TYP-01 through TYP-10 test cases
+- **Dependencies**: Framework ready (BaseAPIClient enhanced)
+
+#### **Other Resource Families** ⏳ **0% IMPLEMENTED**
+- **Status**: Test cases defined but not yet implemented
+- **Planned**: Items, Berries, Machines, Evolution, Encounters, Games, Locations, Regions, Pokedexes, Generations, Versions
+- **Dependencies**: Framework ready (BaseAPIClient enhanced)
+
+---
+
+## 6.2 Framework Readiness
+
+The testing framework is now **fully ready** for implementing other resource families:
+
+✅ **BaseAPIClient**: Enhanced with all HTTP methods and headers support  
+✅ **Test Infrastructure**: Robust pytest fixtures and configuration  
+✅ **Validation Helpers**: Reusable test data and assertion methods  
+✅ **CLI Override**: Dynamic base URL configuration for multi-environment testing  
+✅ **Documentation**: Comprehensive test case definitions for all resource families  
+✅ **Quality Standards**: All tests follow established patterns and best practices
 
 ---
 

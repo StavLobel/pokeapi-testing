@@ -54,6 +54,57 @@ These models are shared across multiple resource families:
 - **`PokemonEncounter`** - Pokémon-specific encounters
 - **`VersionEncounterDetail`** - Version-specific encounter details
 
+---
+
+## **🚀 Enhanced Framework Components**
+
+### **Enhanced BaseAPIClient (`src/core/base_api_client.py`)**
+The BaseAPIClient has been enhanced with comprehensive HTTP method support:
+
+#### **Core HTTP Methods:**
+- **`get(endpoint, params, headers)`** - GET requests with query parameters and headers
+- **`post(endpoint, data, headers)`** - POST requests for testing non-GET scenarios
+- **`put(endpoint, data, headers)`** - PUT requests for testing non-GET scenarios
+- **`delete(endpoint, headers)`** - DELETE requests for testing non-GET scenarios
+- **`patch(endpoint, data, headers)`** - PATCH requests for testing non-GET scenarios
+
+#### **Enhanced Features:**
+- **Headers Support**: All methods support custom headers for testing
+- **Error Handling**: Graceful handling of 4xx/5xx responses for testing scenarios
+- **Dynamic Base URL**: CLI override support via environment variables
+- **Comprehensive Logging**: Detailed request/response logging for debugging
+
+#### **Usage Example:**
+```python
+# Test different HTTP methods
+client.test_http_method("POST", pokemon_id=1)
+client.test_http_method("PUT", pokemon_id=1)
+client.test_http_method("DELETE", pokemon_id=1)
+client.test_http_method("PATCH", pokemon_id=1)
+
+# Test with custom headers
+client.get_pokemon_with_headers(1)
+```
+
+### **Enhanced API Clients**
+Each resource family will have an enhanced client inheriting from BaseAPIClient:
+
+#### **PokemonAPIClient (`src/api/pokemon_client.py`)**
+- **`get_pokemon_by_id(id)`** - Retrieve Pokémon by ID
+- **`get_pokemon_by_name(name)`** - Retrieve Pokémon by name
+- **`list_pokemon(limit, offset)`** - List Pokémon with pagination
+- **`test_http_method(method, pokemon_id)`** - Test non-GET HTTP methods
+- **`get_pokemon_with_headers(pokemon_id)`** - Test with custom headers
+
+#### **Future API Clients:**
+- **`AbilitiesAPIClient`** - For testing abilities endpoints
+- **`MovesAPIClient`** - For testing moves endpoints
+- **`TypesAPIClient`** - For testing types endpoints
+- **`ItemsAPIClient`** - For testing items endpoints
+- **And more...**
+
+---
+
 ## **🎯 Resource-Specific Models**
 
 ### **Pokémon Models (`src/models/pokemon.py`)**
