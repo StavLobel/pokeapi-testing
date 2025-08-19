@@ -1,13 +1,12 @@
 # PokeAPI Testing Framework
 
-[![CI/CD Pipeline](https://github.com/StavLobel/pokeapi-testing/actions/workflows/ci.yml/badge.svg)](https://github.com/StavLobel/pokeapi-testing/actions/workflows/ci.yml)
 [![Python Version](https://img.shields.io/badge/python-3.11+-blue.svg?logo=python)](https://www.python.org/downloads/)
-[![Playwright](https://img.shields.io/badge/playwright-1.41+-green.svg?logo=playwright)](https://playwright.dev/)
-[![Pytest](https://img.shields.io/badge/pytest-8.0+-yellow.svg?logo=pytest)](https://pytest.org/)
+[![Playwright](https://img.shields.io/badge/playwright-1.37+-green.svg?logo=playwright)](https://playwright.dev/)
+[![Pytest](https://img.shields.io/badge/pytest-7.4+-yellow.svg?logo=pytest)](https://pytest.org/)
+[![Pydantic](https://img.shields.io/badge/pydantic-2.0+-orange.svg)](https://pydantic.dev/)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-A comprehensive Python-based API testing framework using Playwright's APIRequestContext, featuring JSON Schema validation and seamless CI/CD integration.
+A comprehensive Python-based API testing framework for PokéAPI v2 using Playwright's APIRequestContext and Pydantic for data validation.
 
 ## 🚀 Quick Start
 
@@ -31,8 +30,8 @@ source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# 4) Set up environment variables
-cp docs/.env.example .env
+# 4) Install Playwright browsers
+playwright install
 ```
 
 ### Installation (via Makefile shortcuts)
@@ -40,39 +39,61 @@ cp docs/.env.example .env
 # Install dependencies
 make install
 
-# Setup development environment
+# Setup development environment (includes Playwright browsers)
 make setup
 
 # Run all tests
-make test-all
+make test
 ```
 
 ### Running Tests
 ```bash
-# All API tests
+# All tests
+make test
+
+# API tests only
 make test-api
+
+# Smoke tests only
+make test-smoke
 
 # Specific test categories
 pytest -m smoke
 pytest -m regression
-
-# CI pipeline
-make ci
 ```
 
 ## 🧪 Test Coverage
 
-### PokeAPI Tests
-- **TC-API-001**: Verify Pokemon list endpoint returns valid data
-- **TC-API-002**: Verify specific Pokemon details endpoint
-- **TC-API-003**: Verify API response schemas and data types
-- **TC-API-004**: Verify error handling for invalid requests
+### PokéAPI v2 Endpoints
+Based on the [Software Test Plan](docs/software-test-plan.md), the framework covers:
+
+- **Pokémon**: Individual and list endpoints
+- **Abilities**: Ability details and listings
+- **Moves**: Move information and collections
+- **Types**: Type data and relationships
+- **Items**: Item details and listings
+- **Berries**: Berry information
+- **Machines**: Machine data
+- **Evolution**: Evolution chains
+- **Encounters**: Encounter data
+- **Games**: Game information
+- **Locations**: Location data
+- **Regions**: Region information
+- **Pokedexes**: Pokedex entries
+- **Generations**: Generation data
+- **Versions**: Version information
+
+### Test Categories
+- **Positive Tests**: Valid ID/name retrieval, pagination
+- **Negative Tests**: Invalid IDs, error handling
+- **Schema Tests**: Response structure validation
+- **Cross-Resource Tests**: Reference integrity
 
 ## 🏗️ Architecture
 
 Built with:
 - **Playwright APIRequestContext** for HTTP requests
-- **JSON Schema validation** for response validation
+- **Pydantic** for data validation and modeling
 - **SOLID principles** for maintainability
 - **Type safety** with Python type hints
 - **Structured logging** with correlation IDs
@@ -81,36 +102,37 @@ Built with:
 
 ### 🧪 **Comprehensive API Testing**
 - **REST API Testing**: Full HTTP request/response validation
-- **JSON Schema Validation**: Automatic response structure validation
+- **Pydantic Validation**: Automatic response structure validation
 - **Performance Testing**: Response time tracking and analysis
 - **Error Handling**: Comprehensive error scenario testing
 
-### 🚀 **CI/CD Excellence**
-- **GitHub Actions**: Automated testing on every push and PR
+### 🚀 **Development Excellence**
+- **Makefile Commands**: Streamlined development workflow
 - **Quality Gates**: Automated code quality checks and validation
 
 ### 🛡️ **Code Quality**
 - **Type Safety**: Full type checking for reliability
 - **Code Formatting**: Automated formatting with Black
-- **Linting**: Flake8 linting for code quality standards
+- **Clean Architecture**: SOLID principles and best practices
 
 ### 🏗️ **Architecture**
 - **SOLID Principles**: Clean, maintainable, and extensible code
 - **Structured Logging**: Correlation ID tracking and detailed execution logs
 - **Environment Flexibility**: Support for local, CI, and staging environments
-- **JSON Schema Validation**: Automatic response validation
+- **Pydantic Models**: Type-safe data validation and serialization
 
 ## 📚 Documentation
 
-- [Development Guide](docs/development.md)
-- [System Requirements Document (SRD)](docs/SRD.md)
-- [System Test Plan (STP)](docs/STP.md)
+- [Software Test Plan](docs/software-test-plan.md) - Comprehensive testing strategy for PokéAPI v2
+- [Test Cases](docs/test-cases.md) - Detailed test cases for each resource family
+- [Development Guide](docs/README.md) - Setup and development guidelines
 
 ## 🔗 Links
 
-- **🚀 CI/CD Pipeline**: [GitHub Actions](https://github.com/StavLobel/pokeapi-testing/actions)
-- **📁 Repository**: [GitHub](https://github.com/StavLobel/pokeapi-testing)
+- **📖 PokéAPI v2 Documentation**: [https://pokeapi.co/docs/v2](https://pokeapi.co/docs/v2)
+- **🎭 Playwright Documentation**: [https://playwright.dev/](https://playwright.dev/)
+- **🐍 Pydantic Documentation**: [https://pydantic.dev/](https://pydantic.dev/)
 
 ---
 
-**Built with ❤️ using Playwright, Python, and modern DevOps practices**
+**Built with ❤️ using Playwright, Python, and Pydantic**
